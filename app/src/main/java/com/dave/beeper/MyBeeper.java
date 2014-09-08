@@ -25,8 +25,9 @@ import java.util.TimerTask;
 public class MyBeeper extends ActionBarActivity {
     double dist = 20.0;
     TextView curSpeed;
-    int counter = 0;
-    double speed = 8.0;
+    int beepCounter = 0;
+    int levelCounter = 0;
+    double timeTarget = 80;
     final Handler myHandler = new Handler();
     final Timer myTimer = new Timer();
 
@@ -48,8 +49,10 @@ public class MyBeeper extends ActionBarActivity {
     // Runnable method
     final Runnable myRunnable = new Runnable() {
         public void run() {
-            curSpeed.setText(String.valueOf(speed)); // update your text
-        }
+            curSpeed.setText(String.valueOf(beepCounter));
+            Log.e("n", String.valueOf(levelCounter));
+            Log.e("n", String.valueOf(System.currentTimeMillis()));
+                    }
     };
 
     @Override
@@ -72,65 +75,80 @@ public class MyBeeper extends ActionBarActivity {
     }
 
     public double beeper(double kmph) {
-        return dist / (kmph * 0.277778);
-    }
+        return 10*(dist / (kmph * 0.277778));//returns seconds*10 as a double ie7.5=75
+            }
 
     public void updateUI() {
         //this is called very 0.1 sec
 
-        if (speed < 20.0) {
-            speed++;
-            //this is executed
-            myHandler.post(myRunnable);
-
+        if (beepCounter < 2000.0) {
+            //20 was
+            beepCounter++;
+            levelCounter++;
+            //this is where we test if counter > speed
+            if (beepCounter > timeTarget) {
+                //will trigger based on
+                //600 == 60 seconds
+                beepCounter = 0;
+                MediaPlayer mp = MediaPlayer.create(this, R.raw.beep);
+                mp.start();
+                if (levelCounter>600){
+                    //reset very minute and set some flag to make double noise
+                    levelCounter=0;
+                    timeTarget=timeTarget-5;
+                    //make double beep
+                    //MediaPlayer mp = MediaPlayer.create(this, R.raw.beep);
+                    mp.start();
+                }
+                //mp.stop();
+                //this is executed
+                myHandler.post(myRunnable);
+            }
         } else {
             myTimer.cancel();
         }
-    }
-
 
         //while (speed < 11.0) {
         //    //main loop run every 1 min
-         //curSpeed.setText(Double.toString(speed) + "kmph");
-         //call function to mkae nosie every x seconds for 1 min
+        //curSpeed.setText(Double.toString(speed) + "kmph");
+        //call function to mkae nosie every x seconds for 1 min
         //    double beep = beeper(speed)*1000;
         //    long seconds = System.currentTimeMillis(); //60
         //    long end = seconds + 60000; //60 seconds
         //    long tempo = beepTime + seconds; //double
 
         //    while (seconds < end) {
-                //should loop for 60 seconds
+        //should loop for 60 seconds
         //        if (seconds > tempo) {
         //            try {
-                        //Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                        //Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-                        //r.play();
-         //               Log.e("n", "beep");
-         //               MediaPlayer mp = MediaPlayer.create(this, R.raw.beep);
-         //               mp.start();
+        //Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        //Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        //r.play();
+        //               Log.e("n", "beep");
+        //               MediaPlayer mp = MediaPlayer.create(this, R.raw.beep);
+        //               mp.start();
 
-         //               tempo = beepTime + System.currentTimeMillis();
-         //               curSpeed.setText(Double.toString(speed) + "kmph");
+        //               tempo = beepTime + System.currentTimeMillis();
+        //               curSpeed.setText(Double.toString(speed) + "kmph");
 
-         //           } catch (Exception e) {
-         //               e.printStackTrace();
-          //          }
+        //           } catch (Exception e) {
+        //               e.printStackTrace();
+        //          }
 
-                    //Log.e("n", Double.toString(seconds) + " - " + Double.toString(target));
+        //Log.e("n", Double.toString(seconds) + " - " + Double.toString(target));
 
-          //      }
-          //      seconds = System.currentTimeMillis();
-          //  }
-          //  playSound((long)beep);
-          //  speed = speed + 0.5;
-          //  MediaPlayer mp = MediaPlayer.create(this, R.raw.beep);
-          //  mp.start();
-           // Log.e("n", "beep2");
-            //todo: add stop button!
-            //todo: fix screen update hhttp://www.lucazanini.eu/2013/android/updating-frequently-a-textview-inside-a-loop/?lang=en
+        //      }
+        //      seconds = System.currentTimeMillis();
+        //  }
+        //  playSound((long)beep);
+        //  speed = speed + 0.5;
+        //  MediaPlayer mp = MediaPlayer.create(this, R.raw.beep);
+        //  mp.start();
+        // Log.e("n", "beep2");
+        //todo: add stop button!
+        //todo: fix screen update hhttp://www.lucazanini.eu/2013/android/updating-frequently-a-textview-inside-a-loop/?lang=en
         //}
 
 
-
         //}
-    }
+    }}
