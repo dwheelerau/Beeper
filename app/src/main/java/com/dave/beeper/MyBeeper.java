@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
+//test comment
 
 public class MyBeeper extends ActionBarActivity {
     double dist = 20.0;
