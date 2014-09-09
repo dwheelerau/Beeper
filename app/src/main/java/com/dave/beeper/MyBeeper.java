@@ -27,15 +27,18 @@ public class MyBeeper extends ActionBarActivity {
     TextView curSpeed;
     int beepCounter = 0;
     int levelCounter = 0;
-    double timeTarget = 80;
+    double timeTarget;
+    double speed = 7.5;
     final Handler myHandler = new Handler();
     final Timer myTimer = new Timer();
+    //MediaPlayer mp = MediaPlayer.create(this, R.raw.beep);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_beeper);
-        //update screen with current speed
+        //get starting time based on speed
+        timeTarget = beeper(speed); //* 1000;
         curSpeed = (TextView) findViewById(R.id.kmh);
         // Timer
         TimerTask myTask = new TimerTask() {
@@ -49,10 +52,12 @@ public class MyBeeper extends ActionBarActivity {
     // Runnable method
     final Runnable myRunnable = new Runnable() {
         public void run() {
-            curSpeed.setText(String.valueOf(beepCounter));
-            Log.e("n", String.valueOf(levelCounter));
-            Log.e("n", String.valueOf(System.currentTimeMillis()));
-                    }
+            if (levelCounter == 0) {
+                curSpeed.setText("Stepping up a level\nnew level " + String.valueOf(speed));
+            } else {
+                curSpeed.setText(String.valueOf(speed));
+            }
+        }
     };
 
     @Override
@@ -82,23 +87,26 @@ public class MyBeeper extends ActionBarActivity {
         //this is called very 0.1 sec
 
         if (beepCounter < 2000.0) {
-            //20 was
-            beepCounter++;
-            levelCounter++;
+            //counters
+            beepCounter++; //cycle based on speed/time
+            levelCounter++; //cycle each 60 seconds
             //this is where we test if counter > speed
             if (beepCounter > timeTarget) {
-                //will trigger based on
-                //600 == 60 seconds
+                //will trigger based on speed
                 beepCounter = 0;
                 MediaPlayer mp = MediaPlayer.create(this, R.raw.beep);
                 mp.start();
+                Log.e("n", String.valueOf(timeTarget));
                 if (levelCounter>600){
                     //reset very minute and set some flag to make double noise
-                    levelCounter=0;
-                    timeTarget=timeTarget-5;
+                    levelCounter = 0;
+                    //increase speed by 0.5
+                    speed = speed + 0.5;
+                    //update time target based on new speed
+                    timeTarget = beeper(speed);
                     //make double beep
-                    //MediaPlayer mp = MediaPlayer.create(this, R.raw.beep);
-                    mp.start();
+                    MediaPlayer mp2 = MediaPlayer.create(this, R.raw.beep);
+                    mp2.start();
                 }
                 //mp.stop();
                 //this is executed
@@ -106,7 +114,7 @@ public class MyBeeper extends ActionBarActivity {
             }
         } else {
             myTimer.cancel();
-        }
+            }
 
         //while (speed < 11.0) {
         //    //main loop run every 1 min
