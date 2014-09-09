@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.media.ToneGenerator;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
@@ -31,7 +32,7 @@ public class MyBeeper extends ActionBarActivity {
     double speed = 7.5;
     final Handler myHandler = new Handler();
     final Timer myTimer = new Timer();
-    //MediaPlayer mp = MediaPlayer.create(this, R.raw.beep);
+    //MediaPlayer mp;// = MediaPlayer.create(this, R.raw.beep);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,8 @@ public class MyBeeper extends ActionBarActivity {
         setContentView(R.layout.activity_my_beeper);
         //get starting time based on speed
         timeTarget = beeper(speed); //* 1000;
+        //mp = MediaPlayer.create(this, R.raw.beep);
+        //mp.setLooping(true);
         curSpeed = (TextView) findViewById(R.id.kmh);
         // Timer
         TimerTask myTask = new TimerTask() {
@@ -52,11 +55,21 @@ public class MyBeeper extends ActionBarActivity {
     // Runnable method
     final Runnable myRunnable = new Runnable() {
         public void run() {
+            ToneGenerator toneGenerator= new ToneGenerator(AudioManager.STREAM_DTMF,ToneGenerator.MAX_VOLUME);
             if (levelCounter == 0) {
-                curSpeed.setText("Stepping up a level\nnew level " + String.valueOf(speed));
+               curSpeed.setText("Stepping up a level of " + String.valueOf(speed) + "km/hr");
+                //this will play tone for 2 seconds.
+                //toneGenerator.startTone(ToneGenerator.TONE_DTMF_1, 2000);
+                toneGenerator.startTone(ToneGenerator.TONE_DTMF_2,1500);
+
+                Log.e("n", "60min play");
             } else {
-                curSpeed.setText(String.valueOf(speed));
+                curSpeed.setText(String.valueOf(speed) + "km/hr");
+                //this will play tone for 1 seconds.
+                toneGenerator.startTone(ToneGenerator.TONE_DTMF_1, 500);
+                Log.e("n", "7 sec play");
             }
+            //curSpeed.setText(String.valueOf(speed) + "km/hr");
         }
     };
 
@@ -94,8 +107,8 @@ public class MyBeeper extends ActionBarActivity {
             if (beepCounter > timeTarget) {
                 //will trigger based on speed
                 beepCounter = 0;
-                MediaPlayer mp = MediaPlayer.create(this, R.raw.beep);
-                mp.start();
+                //MediaPlayer mp = MediaPlayer.create(this, R.raw.beep);
+                //mp.start();
                 Log.e("n", String.valueOf(timeTarget));
                 if (levelCounter>600){
                     //reset very minute and set some flag to make double noise
@@ -105,8 +118,9 @@ public class MyBeeper extends ActionBarActivity {
                     //update time target based on new speed
                     timeTarget = beeper(speed);
                     //make double beep
-                    MediaPlayer mp2 = MediaPlayer.create(this, R.raw.beep);
-                    mp2.start();
+                    //MediaPlayer mp2 = MediaPlayer.create(this, R.raw.beep);
+                    //mp2.start();
+                    //myHandler.post(myRunnable);
                 }
                 //mp.stop();
                 //this is executed
@@ -114,6 +128,7 @@ public class MyBeeper extends ActionBarActivity {
             }
         } else {
             myTimer.cancel();
+            //mp.release();
             }
 
         //while (speed < 11.0) {
