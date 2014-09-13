@@ -51,14 +51,20 @@ public class MyBeeper extends ActionBarActivity {
         levelText = (TextView) findViewById(R.id.level);
         lapText = (TextView) findViewById(R.id.lap);
         // Timer
-        TimerTask myTask = new TimerTask() {
+        final TimerTask myTask = new TimerTask() {
             public void run() {
                 updateUI(); // updateUI method
             }
         };
-        myTimer.schedule(myTask,0,100); // TimerTask, delay, period [100=0.1seconds]
-        final Button button = (Button) findViewById(R.id.stop);
-        button.setOnClickListener(new View.OnClickListener() {
+        //myTimer.schedule(myTask,0,100); // TimerTask, delay, period [100=0.1seconds]
+        final Button stop = (Button) findViewById(R.id.stop);
+        final Button start = (Button) findViewById(R.id.start);
+        start.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                myTimer.schedule(myTask,0,100); // TimerTask, delay, period [100=0.1seconds]
+            }
+        });
+        stop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 myTimer.cancel();
                 finish();
@@ -105,7 +111,7 @@ public class MyBeeper extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_menu_divider) {
             return true;
         }
         return super.onOptionsItemSelected(item);

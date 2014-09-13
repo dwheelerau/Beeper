@@ -35,9 +35,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button
+        android:id="@+id/start"
+        android:text="@string/start"
+        android:textSize="40sp"
+        android:background="@color/green"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <Button
         android:id="@+id/stop"
         android:text="@string/stop"
         android:textSize="80sp"
+        android:background="@color/red"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 </LinearLayout>

@@ -9,6 +9,8 @@
     <string name="lap">Lap: 0</string>
     <string name="stop">Stop!</string>
     <string name="welcome">Get ready to Run!</string>
+    <string name="start">Start!</string>
+    <string name="quit">Quit</string>
 
 
 </resources>
