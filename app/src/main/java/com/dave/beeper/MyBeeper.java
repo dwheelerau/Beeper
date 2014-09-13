@@ -14,6 +14,8 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -55,6 +57,14 @@ public class MyBeeper extends ActionBarActivity {
             }
         };
         myTimer.schedule(myTask,0,100); // TimerTask, delay, period [100=0.1seconds]
+        final Button button = (Button) findViewById(R.id.stop);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                myTimer.cancel();
+                finish();
+                System.exit(0);
+            }
+        });
     }
 
     // Runnable method
