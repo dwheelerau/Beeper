@@ -67,8 +67,8 @@ public class MyBeeper extends ActionBarActivity {
         stop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 myTimer.cancel();
-                finish();
-                System.exit(0);
+                //finish();
+                //System.exit(0);
             }
         });
     }

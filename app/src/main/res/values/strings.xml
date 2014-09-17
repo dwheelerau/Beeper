@@ -5,7 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="kmph">km/hr: 8.0</string>
-    <string name="level">Level: 0</string>
+    <string name="level">Level: 1</string>
     <string name="lap">Lap: 0</string>
     <string name="stop">Stop!</string>
     <string name="welcome">Get ready to Run!</string>
